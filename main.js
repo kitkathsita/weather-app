@@ -1,5 +1,9 @@
 import './style.css'
 
+let cityInput = document.getElementById('city')
+let cityInfo = document.getElementById('information')
+let cityForm = document.getElementById('formInfo')
+
 fetch('https://api.openweathermap.org/data/2.5/weather?q=London&APPID=41e4217547ae32a4604d50bba391d674')
   .then (function(response) {
     //good response
@@ -45,8 +49,15 @@ async function getWindSpeed(city) {
   return cityInfo.wind.speed
 }
 
-getTemp('bucaramanga')
-getTempFeelsLike('bucaramanga')
-getHumidity('bucaramanga')
-getWeather('bucaramanga')
-getWindSpeed('bucaramanga')
+async function showInfo(e) {
+  e.preventDefault()
+  cityInfo.innerHTML = `<h2>${await cityInput.value}</h2>
+  <div class="info">Temperatura: ${await getTemp(cityInput.value)} K </div>
+  <div class="info">Feels like: ${await getTempFeelsLike(cityInput.value)} K</div>
+  <div class="info">Humedad: ${await getHumidity(cityInput.value)}</div>
+  <div class="info">Wind speed: ${await getWindSpeed(cityInput.value)} km/h</div>
+  <div class="info">Clima: ${await getWeather(cityInput.value)}</div>` 
+}
+
+cityForm.addEventListener('submit', showInfo)
+
